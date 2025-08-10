@@ -16,6 +16,7 @@ export const ModalContext = React.createContext<{ isModalOpen: boolean; setIsMod
 export default function App() {
   const [language, setLanguage] = useState<Language>('catala');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const langCtx = useMemo(() => ({ language, setLanguage }), [language]);
   const modalCtx = useMemo(() => ({ isModalOpen, setIsModalOpen }), [isModalOpen]);
   const location = useLocation();
@@ -36,6 +37,15 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [isHome]);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <LanguageContext.Provider value={langCtx}>
       <ModalContext.Provider value={modalCtx}>
@@ -53,8 +63,35 @@ export default function App() {
               <button className={language === 'catala' ? 'active' : ''} onClick={() => setLanguage('catala')}>CAT</button>
               <button className={language === 'english' ? 'active' : ''} onClick={() => setLanguage('english')}>EN</button>
             </div>
+            <button 
+              className="mobile-menu-toggle" 
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? '✕' : '☰'}
+            </button>
           </div>
         </nav>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
+          <div className="mobile-menu-content">
+            <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>
+              {language === 'catala' ? 'Inici' : 'Home'}
+            </NavLink>
+            <NavLink to="/artista" onClick={() => setIsMobileMenuOpen(false)}>
+              {language === 'catala' ? 'L\'Artista' : 'The Artist'}
+            </NavLink>
+            <NavLink to="/obra" onClick={() => setIsMobileMenuOpen(false)}>
+              {language === 'catala' ? 'L\'Obra' : 'The Work'}
+            </NavLink>
+            <NavLink to="/taller" onClick={() => setIsMobileMenuOpen(false)}>
+              {language === 'catala' ? 'El Taller' : 'The Workshop'}
+            </NavLink>
+          </div>
+        </div>
+
         <div className={`routes ${isHome ? 'routes-home' : 'routes-default'} ${isModalOpen ? 'compact' : ''}`}>
           <Routes>
             <Route path="/" element={<Inici />} />

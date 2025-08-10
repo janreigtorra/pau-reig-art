@@ -524,12 +524,15 @@ function monthToIndex(m?: string | number): number | null {
 function TimelineView({ works, onSelect, language }: TimelineViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState<number>(1000);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
     const el = containerRef.current;
     const update = () => {
       if (el) {
-        setWidth(el.clientWidth);
+        const newWidth = el.clientWidth;
+        setWidth(newWidth);
+        setIsMobile(newWidth <= 768);
       }
     };
     update();
@@ -593,14 +596,14 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
   }, [works]);
 
   const centerX = width / 2;
-  const baseSpacing = 35; // Base spacing between months
-  const extraSpacingForWorks = 95; // Extra spacing when there are works in the month
+  const baseSpacing = isMobile ? 25 : 35; // Reduced spacing on mobile
+  const extraSpacingForWorks = isMobile ? 70 : 95; // Reduced extra spacing on mobile
   
   // Calculate path points vertically with dynamic spacing
   const pathPoints = useMemo(() => {
     if (timelineData.length === 0) return [];
     
-    let cumulativeY = 100; // Start 100px from top
+    let cumulativeY = isMobile ? 60 : 100; // Start closer to top on mobile
     
     return timelineData.map((point, index) => {
       const hasWorks = point.works.length > 0;
@@ -609,8 +612,8 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
       const y = cumulativeY;
       cumulativeY += spacing;
       
-      // Create a gentle horizontal wave
-      const waveOffset = Math.sin(index * 0.3) * 260; 
+      // Create a gentle horizontal wave - reduced on mobile
+      const waveOffset = Math.sin(index * 0.3) * (isMobile ? 120 : 260); 
       const x = centerX + waveOffset;
       
       return {
@@ -619,12 +622,12 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
         ...point
       };
     });
-  }, [timelineData, centerX, baseSpacing, extraSpacingForWorks]);
+  }, [timelineData, centerX, baseSpacing, extraSpacingForWorks, isMobile]);
 
   // Calculate total height based on actual positions
   const totalHeight = pathPoints.length > 0 
-    ? pathPoints[pathPoints.length - 1].y + 200 
-    : 600;
+    ? pathPoints[pathPoints.length - 1].y + (isMobile ? 120 : 200)
+    : (isMobile ? 400 : 600);
 
   // Generate SVG path for vertical timeline
   const pathData = useMemo(() => {
@@ -684,7 +687,7 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
         <path
           d={pathData}
           stroke="url(#brownPathGradient)"
-          strokeWidth="3"
+          strokeWidth={isMobile ? "2" : "3"}
           strokeDasharray="12,6"
           fill="none"
           markerEnd="url(#timeline-arrow)"
@@ -701,22 +704,22 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
               <circle
                 cx={point.x}
                 cy={point.y}
-                r={hasWorks ? 10 : 6}
+                r={hasWorks ? (isMobile ? 8 : 10) : (isMobile ? 4 : 6)}
                 fill="white"
                 stroke="#a67c5a"
-                strokeWidth={hasWorks ? 3 : 2}
+                strokeWidth={hasWorks ? (isMobile ? 2 : 3) : (isMobile ? 1 : 2)}
                 opacity={hasWorks ? 1 : 0.6}
               />
               
               {/* Year label - only show on first month of each year */}
               {isCurrentYear && (
                 <text
-                  x={point.x + 25}
-                  y={point.y - 8}
+                  x={point.x + (isMobile ? 15 : 25)}
+                  y={point.y - (isMobile ? 6 : 8)}
                   textAnchor="start"
                   className="timeline-date-label"
                   style={{
-                    fontSize: '18px',
+                    fontSize: isMobile ? '14px' : '18px',
                     fontWeight: '700',
                     fill: '#8b6f3d',
                     fontFamily: 'system-ui, sans-serif'
@@ -728,12 +731,12 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
               
               {/* Month label - always show */}
               <text
-                x={point.x + 25}
-                y={point.y + (isCurrentYear ? 8 : 4)}
+                x={point.x + (isMobile ? 15 : 25)}
+                y={point.y + (isCurrentYear ? (isMobile ? 6 : 8) : (isMobile ? 3 : 4))}
                 textAnchor="start"
                 className="timeline-month-label"
                 style={{
-                  fontSize: hasWorks ? '14px' : '12px',
+                  fontSize: hasWorks ? (isMobile ? '11px' : '14px') : (isMobile ? '9px' : '12px'),
                   fontWeight: hasWorks ? '600' : '400',
                   fill: hasWorks ? '#a67c5a' : '#c4a67a',
                   fontFamily: 'system-ui, sans-serif'
@@ -763,10 +766,10 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
           }
           
           const sideMultiplier = isLeft ? -1 : 1;
-          const distance = 150; // Fixed distance from timeline
+          const distance = isMobile ? 100 : 150; // Reduced distance on mobile
           
           const itemX = point.x + sideMultiplier * distance;
-          const itemY = point.y + (workIndex * 10); // Slight vertical stagger for multiple items
+          const itemY = point.y + (workIndex * (isMobile ? 6 : 10)); // Reduced stagger on mobile
           
           return (
             <div
@@ -786,18 +789,18 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                   position: 'absolute',
                   left: '50%',
                   top: '50%',
-                  width: distance + 50,
-                  height: 50,
+                  width: distance + (isMobile ? 30 : 50),
+                  height: isMobile ? 30 : 50,
                   transform: 'translate(-50%, -50%)',
                   zIndex: -1,
                   pointerEvents: 'none'
                 }}
               >
                 <line
-                  x1={isLeft ? distance + 25 : 25}
-                  y1={25}
-                  x2={isLeft ? 25 : distance + 25}
-                  y2={25}
+                  x1={isLeft ? distance + (isMobile ? 15 : 25) : (isMobile ? 15 : 25)}
+                  y1={isMobile ? 15 : 25}
+                  x2={isLeft ? (isMobile ? 15 : 25) : distance + (isMobile ? 15 : 25)}
+                  y2={isMobile ? 15 : 25}
                   stroke="#c4a67a"
                   strokeWidth="1.5"
                   strokeDasharray="4,3"
@@ -812,13 +815,13 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  padding: '12px',
+                  padding: isMobile ? '8px' : '12px',
                   background: 'white',
                   borderRadius: '12px',
                   border: '2px solid #d4b896',
                   cursor: 'pointer',
-                  minWidth: '140px',
-                  maxWidth: '160px',
+                  minWidth: isMobile ? '100px' : '140px',
+                  maxWidth: isMobile ? '120px' : '160px',
                   boxShadow: '0 4px 12px rgba(166, 124, 90, 0.15)',
                 }}
               >
@@ -827,11 +830,11 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                     src={work.main2ImageUrl || work.mainImageUrl}
                     alt={work.meta.nom}
                     style={{
-                      width: '80px',
-                      height: '80px',
+                      width: isMobile ? '60px' : '80px',
+                      height: isMobile ? '60px' : '80px',
                       objectFit: 'cover',
                       borderRadius: '8px',
-                      marginBottom: '8px',
+                      marginBottom: isMobile ? '6px' : '8px',
                       border: '1px solid #d4b896'
                     }}
                     loading="lazy"
@@ -839,16 +842,16 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                 ) : (
                   <div
                     style={{
-                      width: '80px',
-                      height: '80px',
+                      width: isMobile ? '60px' : '80px',
+                      height: isMobile ? '60px' : '80px',
                       backgroundColor: '#f4f1e8',
                       border: '1px solid #d4b896',
                       borderRadius: '8px',
-                      marginBottom: '8px',
+                      marginBottom: isMobile ? '6px' : '8px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '28px',
+                      fontSize: isMobile ? '20px' : '28px',
                       color: '#a67c5a'
                     }}
                   >
@@ -858,7 +861,7 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                 
                 <div
                   style={{
-                    fontSize: '13px',
+                    fontSize: isMobile ? '11px' : '13px',
                     fontWeight: '600',
                     color: '#8b6f3d',
                     textAlign: 'center',
@@ -877,10 +880,10 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                 {work.meta.city && (
                   <div
                     style={{
-                      fontSize: '11px',
+                      fontSize: isMobile ? '9px' : '11px',
                       color: '#a67c5a',
                       textAlign: 'center',
-                      padding: '2px 8px',
+                      padding: isMobile ? '1px 6px' : '2px 8px',
                       backgroundColor: '#f4f1e8',
                       borderRadius: '12px',
                       border: '1px solid #e6d4b8'
@@ -895,35 +898,37 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
         });
       })}
       
-      {/* Timeline direction indicator */}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '8px 16px',
-          background: 'rgba(255,255,255,0.95)',
-          borderRadius: '24px',
-          fontSize: '12px',
-          color: '#8b6f3d',
-          fontWeight: '600',
-          zIndex: 100,
-          border: '1px solid #d4b896',
-          boxShadow: '0 4px 12px rgba(166, 124, 90, 0.15)'
-        }}
-      >
-        <span>{language === 'catala' ? 'Cronològic' : 'Timeline'}</span>
-        <div style={{ 
-          width: '2px', 
-          height: '16px', 
-          background: 'linear-gradient(to bottom, #d4b896, #a67c5a)',
-          borderRadius: '1px'
-        }} />
-        <span style={{ transform: 'rotate(90deg)' }}>→</span>
-      </div>
+      {/* Timeline direction indicator - hidden on mobile */}
+      {!isMobile && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            background: 'rgba(255,255,255,0.95)',
+            borderRadius: '24px',
+            fontSize: '12px',
+            color: '#8b6f3d',
+            fontWeight: '600',
+            zIndex: 100,
+            border: '1px solid #d4b896',
+            boxShadow: '0 4px 12px rgba(166, 124, 90, 0.15)'
+          }}
+        >
+          <span>{language === 'catala' ? 'Cronològic' : 'Timeline'}</span>
+          <div style={{ 
+            width: '2px', 
+            height: '16px', 
+            background: 'linear-gradient(to bottom, #d4b896, #a67c5a)',
+            borderRadius: '1px'
+          }} />
+          <span style={{ transform: 'rotate(90deg)' }}>→</span>
+        </div>
+      )}
     </div>
   );
 }
