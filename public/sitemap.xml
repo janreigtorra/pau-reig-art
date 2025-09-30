@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://paureig.art/</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/?lang=en" />
+  </url>
+  
+  <!-- Artist Page -->
+  <url>
+    <loc>https://paureig.art/artista</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/artista" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/artista?lang=en" />
+  </url>
+  
+  <!-- Work/Artwork Page -->
+  <url>
+    <loc>https://paureig.art/obra</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/obra" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/obra?lang=en" />
+  </url>
+  
+  <!-- Workshop Page -->
+  <url>
+    <loc>https://paureig.art/taller</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/taller" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/taller?lang=en" />
+  </url>
+  
+  <!-- Media Page -->
+  <url>
+    <loc>https://paureig.art/media</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/media" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/media?lang=en" />
+  </url>
+  
+</urlset>
