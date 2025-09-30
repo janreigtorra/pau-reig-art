@@ -153,7 +153,8 @@ function buildWorks(): WorkItem[] {
   );
 
   // Custom order: lleo, oliba (a.k.a. oliva), ovella, asparrac, somera, then the rest by year desc and name
-  const priorityOrder = ['lleo', 'oliba', 'ovella', 'asparrac', 'somera', 'oliva'];
+  const priorityOrder = ['lleo', 'oliba', 'ovella', 'bou', 'voliac', 'fenixp', 'onada', 'flama', 'espe',
+    'lloret','perles','giroella', 'somera','fenix','voltor', 'bee', 'tarrega', 'voltrega', 'concep','bonavista','asparrac'];
   items.sort((a, b) => {
     const ai = priorityOrder.indexOf(a.slug);
     const bi = priorityOrder.indexOf(b.slug);
@@ -285,7 +286,7 @@ export default function LObra() {
           ))}
         </div>
       ) : view === 'map' ? (
-        <MapView works={works} onSelect={(slug) => setSelectedSlug(slug)} />
+        <MapView works={works} onSelect={(slug) => setSelectedSlug(slug)} language={language} />
       ) : (
         <TimelineView works={works} onSelect={(slug) => setSelectedSlug(slug)} language={language} />
       )}
@@ -370,12 +371,13 @@ export default function LObra() {
   );
 }
 
-type MapViewProps = { works: WorkItem[]; onSelect: (slug: string) => void };
+type MapViewProps = { works: WorkItem[]; onSelect: (slug: string) => void; language: Language };
 
-function MapView({ works, onSelect }: MapViewProps) {
+function MapView({ works, onSelect, language }: MapViewProps) {
   const mapContainerId = 'obra-map-container';
   const mapRef = useRef<L.Map | null>(null);
   const layerRef = useRef<L.LayerGroup | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (mapRef.current) return;
@@ -408,7 +410,15 @@ function MapView({ works, onSelect }: MapViewProps) {
       if (cache[query]) return cache[query];
       try {
         const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
-        const res = await fetch(url, { headers: { Accept: 'application/json' } });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        
+        const res = await fetch(url, { 
+          headers: { Accept: 'application/json' },
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
         if (!res.ok) return null;
         const data = (await res.json()) as Array<{ lat: string; lon: string }>;
         if (data && data.length > 0) {
@@ -417,16 +427,13 @@ function MapView({ works, onSelect }: MapViewProps) {
           localStorage.setItem(cacheKey, JSON.stringify(cache));
           return pos;
         }
-      } catch {}
+      } catch (error) {
+        console.warn(`Geocoding failed for "${query}":`, error);
+      }
       return null;
     };
 
-    const run = async () => {
-      for (const a of addresses) {
-        const pos = await geocode(a.query);
-        if (pos) results.push({ work: a.work, position: pos });
-      }
-
+    const updateMapWithResults = (results: { work: WorkItem; position: LatLng }[], map: L.Map, layer: L.LayerGroup) => {
       const groupKey = (p: LatLng) => `${p.lat.toFixed(4)},${p.lng.toFixed(4)}`;
       const groups = new Map<string, { center: LatLng; items: { work: WorkItem; position: LatLng }[] }>();
       results.forEach((r) => {
@@ -452,10 +459,11 @@ function MapView({ works, onSelect }: MapViewProps) {
             return `<div class="obra-marker-box" data-slug="${r.work.slug}"><div class="obra-marker-fallback">${name}</div></div>`;
           })
           .join('');
-        const html = `<div class="obra-marker-row">${itemsHtml}</div>`;
-        const widthPer = 90; // approximate per item width including gap
+        const html = `<div class="obra-marker-row ${n > 1 ? 'grouped' : ''}">${itemsHtml}</div>`;
+        // Make cards smaller and closer when grouped
+        const widthPer = n > 1 ? 65 : 90; // smaller width when grouped
         const totalWidth = Math.max(90, n * widthPer);
-        const totalHeight = 130; // approximate
+        const totalHeight = n > 1 ? 100 : 130; // smaller height when grouped
         const icon = L.divIcon({
           html,
           className: 'obra-marker',
@@ -483,6 +491,38 @@ function MapView({ works, onSelect }: MapViewProps) {
       }
     };
 
+    const run = async () => {
+      setIsLoading(true);
+      
+      // Process all geocoding requests in parallel with a reasonable concurrency limit
+      const concurrencyLimit = 5;
+      const chunks = [];
+      for (let i = 0; i < addresses.length; i += concurrencyLimit) {
+        chunks.push(addresses.slice(i, i + concurrencyLimit));
+      }
+      
+      for (const chunk of chunks) {
+        const promises = chunk.map(async (a) => {
+          const pos = await geocode(a.query);
+          return pos ? { work: a.work, position: pos } : null;
+        });
+        
+        const chunkResults = await Promise.allSettled(promises);
+        const chunkResultsFiltered = chunkResults
+          .filter((result) => result.status === 'fulfilled' && result.value)
+          .map((result) => (result as PromiseFulfilledResult<{ work: WorkItem; position: LatLng }>).value);
+        
+        results.push(...chunkResultsFiltered);
+        
+        // Update map with current results immediately (progressive loading)
+        if (chunkResultsFiltered.length > 0) {
+          updateMapWithResults(results, map, layer);
+        }
+      }
+      
+      setIsLoading(false);
+    };
+
     run();
   }, [works, onSelect]);
 
@@ -495,7 +535,45 @@ function MapView({ works, onSelect }: MapViewProps) {
     };
   }, []);
 
-  return <div id={mapContainerId} className="obra-map" style={{ position: 'relative', zIndex: 1 }} />;
+  return (
+    <div style={{ position: 'relative' }}>
+      <div id={mapContainerId} className="obra-map" style={{ position: 'relative', zIndex: 1 }} />
+      {isLoading && (
+        <div 
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'rgba(255, 255, 255, 0.95)',
+            padding: '20px 30px',
+            borderRadius: '10px',
+            border: '2px solid #d4b896',
+            boxShadow: '0 4px 12px rgba(166, 124, 90, 0.15)',
+            zIndex: 10,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            fontSize: '14px',
+            fontWeight: '600',
+            color: '#8b6f3d'
+          }}
+        >
+          <div 
+            style={{
+              width: '20px',
+              height: '20px',
+              border: '2px solid #d4b896',
+              borderTop: '2px solid #a67c5a',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}
+          />
+          {language === 'catala' ? 'Carregant marcadors del mapa...' : 'Loading map markers...'}
+        </div>
+      )}
+    </div>
+  );
 }
 
 type TimelineViewProps = { works: WorkItem[]; onSelect: (slug: string) => void; language: Language };
@@ -595,7 +673,7 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
     return timePoints;
   }, [works]);
 
-  const centerX = width / 2;
+  const centerX = isMobile ? (width - 40) / 2 + 20 : width / 2; // Account for mobile padding
   const baseSpacing = isMobile ? 25 : 35; // Reduced spacing on mobile
   const extraSpacingForWorks = isMobile ? 70 : 95; // Reduced extra spacing on mobile
   
@@ -661,7 +739,13 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
   
 
   return (
-    <div ref={containerRef} className="timeline-path-container" style={{ height: `${totalHeight}px`, position: 'relative', width: '100%' }}>
+    <div ref={containerRef} className="timeline-path-container" style={{ 
+      height: `${totalHeight}px`, 
+      position: 'relative', 
+      width: '100%',
+      paddingLeft: isMobile ? '20px' : '0px',
+      paddingRight: isMobile ? '20px' : '0px'
+    }}>
       
       {/* SVG Path */}
       <svg 
@@ -766,7 +850,7 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
           }
           
           const sideMultiplier = isLeft ? -1 : 1;
-          const distance = isMobile ? 100 : 150; // Reduced distance on mobile
+          const distance = isMobile ? 60 : 150; // Much closer to timeline on mobile
           
           const itemX = point.x + sideMultiplier * distance;
           const itemY = point.y + (workIndex * (isMobile ? 6 : 10)); // Reduced stagger on mobile
@@ -783,29 +867,6 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                 zIndex: 10,
               }}
             >
-              {/* Connection line */}
-              <svg
-                style={{
-                  position: 'absolute',
-                  left: '50%',
-                  top: '50%',
-                  width: distance + (isMobile ? 30 : 50),
-                  height: isMobile ? 30 : 50,
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: -1,
-                  pointerEvents: 'none'
-                }}
-              >
-                <line
-                  x1={isLeft ? distance + (isMobile ? 15 : 25) : (isMobile ? 15 : 25)}
-                  y1={isMobile ? 15 : 25}
-                  x2={isLeft ? (isMobile ? 15 : 25) : distance + (isMobile ? 15 : 25)}
-                  y2={isMobile ? 15 : 25}
-                  stroke="#c4a67a"
-                  strokeWidth="1.5"
-                  strokeDasharray="4,3"
-                />
-              </svg>
               
               {/* Work card */}
               <button
@@ -815,14 +876,34 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  padding: isMobile ? '8px' : '12px',
+                  padding: isMobile ? '6px' : '8px',
                   background: 'white',
-                  borderRadius: '12px',
+                  borderRadius: '10px',
                   border: '2px solid #d4b896',
                   cursor: 'pointer',
-                  minWidth: isMobile ? '100px' : '140px',
-                  maxWidth: isMobile ? '120px' : '160px',
+                  minWidth: isMobile ? '80px' : '110px',
+                  maxWidth: isMobile ? '90px' : '120px',
                   boxShadow: '0 4px 12px rgba(166, 124, 90, 0.15)',
+                  transition: 'all 0.3s ease',
+                  transform: 'scale(1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.15)';
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(166, 124, 90, 0.25)';
+                  // Scale the image inside
+                  const img = e.currentTarget.querySelector('img, div') as HTMLElement;
+                  if (img) {
+                    img.style.transform = 'scale(1.1)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(166, 124, 90, 0.15)';
+                  // Reset the image scale
+                  const img = e.currentTarget.querySelector('img, div') as HTMLElement;
+                  if (img) {
+                    img.style.transform = 'scale(1)';
+                  }
                 }}
               >
                 {work.main2ImageUrl || work.mainImageUrl ? (
@@ -830,29 +911,31 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                     src={work.main2ImageUrl || work.mainImageUrl}
                     alt={work.meta.nom}
                     style={{
-                      width: isMobile ? '60px' : '80px',
+                      width: '100%',
                       height: isMobile ? '60px' : '80px',
                       objectFit: 'cover',
-                      borderRadius: '8px',
-                      marginBottom: isMobile ? '6px' : '8px',
-                      border: '1px solid #d4b896'
+                      borderRadius: '6px',
+                      marginBottom: isMobile ? '4px' : '6px',
+                      border: '1px solid #d4b896',
+                      transition: 'all 0.3s ease'
                     }}
                     loading="lazy"
                   />
                 ) : (
                   <div
                     style={{
-                      width: isMobile ? '60px' : '80px',
+                      width: '100%',
                       height: isMobile ? '60px' : '80px',
                       backgroundColor: '#f4f1e8',
                       border: '1px solid #d4b896',
-                      borderRadius: '8px',
-                      marginBottom: isMobile ? '6px' : '8px',
+                      borderRadius: '6px',
+                      marginBottom: isMobile ? '4px' : '6px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: isMobile ? '20px' : '28px',
-                      color: '#a67c5a'
+                      color: '#a67c5a',
+                      transition: 'all 0.3s ease'
                     }}
                   >
                     🎨
@@ -861,12 +944,12 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                 
                 <div
                   style={{
-                    fontSize: isMobile ? '11px' : '13px',
+                    fontSize: isMobile ? '9px' : '11px',
                     fontWeight: '600',
                     color: '#8b6f3d',
                     textAlign: 'center',
                     lineHeight: '1.3',
-                    marginBottom: '4px',
+                    marginBottom: '3px',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     display: '-webkit-box',
@@ -880,12 +963,12 @@ function TimelineView({ works, onSelect, language }: TimelineViewProps) {
                 {work.meta.city && (
                   <div
                     style={{
-                      fontSize: isMobile ? '9px' : '11px',
+                      fontSize: isMobile ? '7px' : '9px',
                       color: '#a67c5a',
                       textAlign: 'center',
-                      padding: isMobile ? '1px 6px' : '2px 8px',
+                      padding: isMobile ? '1px 4px' : '1px 6px',
                       backgroundColor: '#f4f1e8',
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       border: '1px solid #e6d4b8'
                     }}
                   >

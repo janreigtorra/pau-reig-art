@@ -5,6 +5,7 @@ import Inici from './pages/Inici';
 import LArtista from './pages/LArtista';
 import LObra from './pages/LObra';
 import ElTaller from './pages/ElTaller';
+import Media from './pages/Media';
 import logoUrl from '../logo/logo_main.png';
 
 type Language = 'catala' | 'english';
@@ -55,10 +56,21 @@ export default function App() {
               <img src={logoUrl} alt="Pau Reig - Art" />
             </div>
             <div className="spacer" />
-            <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>Inici</NavLink>
-            <NavLink to="/artista" className={({ isActive }) => (isActive ? 'active' : '')}>L'Artista</NavLink>
-            <NavLink to="/obra" className={({ isActive }) => (isActive ? 'active' : '')}>L'Obra</NavLink>
-            <NavLink to="/taller" className={({ isActive }) => (isActive ? 'active' : '')}>El Taller</NavLink>
+            <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+              {language === 'catala' ? 'Inici' : 'Home'}
+            </NavLink>
+            <NavLink to="/artista" className={({ isActive }) => (isActive ? 'active' : '')}>
+              {language === 'catala' ? 'L\'Artista' : 'The Artist'}
+            </NavLink>
+            <NavLink to="/obra" className={({ isActive }) => (isActive ? 'active' : '')}>
+              {language === 'catala' ? 'L\'Obra' : 'The Work'}
+            </NavLink>
+            <NavLink to="/taller" className={({ isActive }) => (isActive ? 'active' : '')}>
+              {language === 'catala' ? 'El Taller' : 'The Workshop'}
+            </NavLink>
+            <NavLink to="/media" className={({ isActive }) => (isActive ? 'active' : '')}>
+              {language === 'catala' ? 'Media' : 'Media'}
+            </NavLink>
             <div className="lang-toggle" role="group" aria-label="Language toggle">
               <button className={language === 'catala' ? 'active' : ''} onClick={() => setLanguage('catala')}>CAT</button>
               <button className={language === 'english' ? 'active' : ''} onClick={() => setLanguage('english')}>EN</button>
@@ -89,6 +101,9 @@ export default function App() {
             <NavLink to="/taller" onClick={() => setIsMobileMenuOpen(false)}>
               {language === 'catala' ? 'El Taller' : 'The Workshop'}
             </NavLink>
+            <NavLink to="/media" onClick={() => setIsMobileMenuOpen(false)}>
+              {language === 'catala' ? 'Media' : 'Media'}
+            </NavLink>
           </div>
         </div>
 
@@ -98,6 +113,7 @@ export default function App() {
             <Route path="/artista" element={<LArtista />} />
             <Route path="/obra" element={<LObra />} />
             <Route path="/taller" element={<ElTaller />} />
+            <Route path="/media" element={<Media />} />
           </Routes>
         </div>
         <footer className="footer">

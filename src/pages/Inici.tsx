@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
+import { LanguageContext } from '../App';
 import heroVideoUrl from '../../videos/video.mp4';
-import contactImgUrl from '../../fotos_generals/photo0.jpg';
+import contactImgUrl from '../../fotos_generals/photo2.jpg';
 
 export default function Inici() {
+  const { language } = useContext(LanguageContext);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isReady, setIsReady] = useState(false);
 
