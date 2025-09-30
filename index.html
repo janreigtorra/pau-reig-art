@@ -17,6 +17,15 @@
     <meta name="language" content="Catalan" />
     <meta name="revisit-after" content="7 days" />
     
+    <!-- Google Specific Meta Tags -->
+    <meta name="google-site-verification" content="" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="geo.region" content="ES-CT" />
+    <meta name="geo.placename" content="Solsona, Catalunya" />
+    <meta name="geo.position" content="41.9937;1.5191" />
+    <meta name="ICBM" content="41.9937, 1.5191" />
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://paureig.art/" />
@@ -61,6 +70,12 @@
       "url": "https://paureig.art",
       "image": "https://paureig.art/logo/logo_main.png",
       "sameAs": [],
+      "mainEntityOfPage": "https://paureig.art",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://paureig.art/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
       "jobTitle": "Artista",
       "worksFor": {
         "@type": "Organization",
@@ -100,6 +115,32 @@
           "@type": "Place",
           "name": "Solsona, Catalunya"
         }
+      }
+    }
+    </script>
+    
+    <!-- Website Schema for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Pau Reig Art",
+      "alternateName": "Pau Reig Torra - Artista",
+      "url": "https://paureig.art",
+      "description": "Pau Reig Torra és un artista català nascut a Solsona especialitzat en escultura, imatgeria festiva i art popular.",
+      "inLanguage": "ca",
+      "author": {
+        "@type": "Person",
+        "name": "Pau Reig Torra"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Pau Reig Torra"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://paureig.art/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
     }
     </script>
