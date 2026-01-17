@@ -1,55 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   
   <!-- Homepage -->
   <url>
-    <loc>https://paureig.art/</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.paureig.art/</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ca" href="https://www.paureig.art/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.paureig.art/?lang=en" />
   </url>
   
   <!-- Artist Page -->
   <url>
-    <loc>https://paureig.art/artista</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.paureig.art/artista</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/artista" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/artista?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ca" href="https://www.paureig.art/artista" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.paureig.art/artista?lang=en" />
   </url>
   
-  <!-- Work/Artwork Page -->
+  <!-- Work/Artwork Gallery Page -->
   <url>
-    <loc>https://paureig.art/obra</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.paureig.art/obra</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/obra" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/obra?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ca" href="https://www.paureig.art/obra" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.paureig.art/obra?lang=en" />
+  </url>
+  
+  <!-- Individual Artwork Pages -->
+  <url>
+    <loc>https://www.paureig.art/obra/lleo-gironella</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/oliba-navas</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/ovella</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/bou-badalona</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/voliac</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/fenixp</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/onada</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/flama</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/espe</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/lloret</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/perles</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/giroella</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/somera</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/fenix-solsona</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/voltor</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/bee</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/tarrega</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/voltrega</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/concep</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/bonavista</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/asparrac</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/bufons</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/escalda</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/patum</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.paureig.art/obra/mesclat</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   
   <!-- Workshop Page -->
   <url>
-    <loc>https://paureig.art/taller</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.paureig.art/taller</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/taller" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/taller?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ca" href="https://www.paureig.art/taller" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.paureig.art/taller?lang=en" />
   </url>
   
   <!-- Media Page -->
   <url>
-    <loc>https://paureig.art/media</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.paureig.art/media</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="ca" href="https://paureig.art/media" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://paureig.art/media?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ca" href="https://www.paureig.art/media" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.paureig.art/media?lang=en" />
   </url>
   
 </urlset>

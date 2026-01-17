@@ -14,11 +14,15 @@
 
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
+html {
+  overflow-x: hidden;
+}
 body {
   margin: 0;
   font-family: 'Source Sans Pro', 'Inter', 'Century Gothic', 'Arial', 'Helvetica', sans-serif;
   color: var(--text);
   background: #ffffff;
+  overflow-x: hidden;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -1999,4 +2003,599 @@ a { color: inherit; text-decoration: none; }
 
 .retry-button:hover {
   background: #c53030;
+}
+
+/* ============================================
+   OBRA DETAIL PAGE STYLES
+   ============================================ */
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.breadcrumb a {
+  color: #a67c5a;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #8b6f3d;
+  text-decoration: underline;
+}
+
+.breadcrumb .separator {
+  color: #d4b896;
+}
+
+.breadcrumb .current {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Obra Detail Layout - Text first, then images below */
+.obra-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+/* Gallery Section */
+.obra-detail-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.obra-detail-carousel {
+  position: relative;
+  background: #f8f6f3;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.obra-detail-main-img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* Ensure images never overflow */
+.obra-detail img {
+  max-width: 100%;
+  height: auto;
+}
+
+.obra-detail-carousel .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #d4b896;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  color: #a67c5a;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.obra-detail-carousel .carousel-btn:hover {
+  background: #a67c5a;
+  color: white;
+  border-color: #a67c5a;
+}
+
+.obra-detail-carousel .carousel-btn.prev {
+  left: 16px;
+}
+
+.obra-detail-carousel .carousel-btn.next {
+  right: 16px;
+}
+
+
+.obra-detail-placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #f4f1e8;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+}
+
+/* Thumbnails */
+.obra-detail-thumbs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.obra-detail-thumbs .thumb {
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  background: none;
+}
+
+.obra-detail-thumbs .thumb:hover {
+  border-color: #d4b896;
+}
+
+.obra-detail-thumbs .thumb.active {
+  border-color: #a67c5a;
+}
+
+.obra-detail-thumbs .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Info Section */
+.obra-detail-info {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+.obra-detail-info h1 {
+  font-family: 'Merienda', cursive;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #8b6f3d;
+  margin: 0 0 16px 0;
+}
+
+.obra-detail-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.obra-detail-description {
+  margin-bottom: 0;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.obra-detail-description p {
+  margin: 0;
+  color: #4a4a4a;
+}
+
+/* Action Buttons */
+.obra-detail-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Hide the actions inside the info section, show the one after gallery */
+.obra-detail-actions.desktop-only {
+  display: none;
+}
+
+.obra-detail-actions.mobile-only {
+  display: flex;
+  margin-top: 24px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #f4f1e8;
+  color: #8b6f3d;
+  border: 2px solid #d4b896;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #a67c5a;
+  color: white;
+  border-color: #a67c5a;
+}
+
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  color: #a67c5a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-text:hover {
+  color: #8b6f3d;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #a67c5a;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background: #8b6f3d;
+}
+
+/* Related Works Section */
+.related-works {
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid #e6d4b8;
+}
+
+.related-works h2 {
+  font-family: 'Merienda', cursive;
+  font-size: 1.5rem;
+  color: #8b6f3d;
+  margin: 0 0 24px 0;
+}
+
+.related-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .related-works-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .related-works-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.related-work-card {
+  display: block;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e6d4b8;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.related-work-card:hover {
+  border-color: #a67c5a;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(166, 124, 90, 0.15);
+}
+
+.related-work-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.related-work-placeholder {
+  width: 100%;
+  height: 160px;
+  background: #f4f1e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.related-work-info {
+  padding: 16px;
+}
+
+.related-work-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #8b6f3d;
+}
+
+.related-work-info .city {
+  font-size: 0.85rem;
+  color: #a67c5a;
+}
+
+/* Mobile adjustments for obra detail */
+@media (max-width: 900px) {
+  .obra-detail {
+    padding-top: 16px;
+    overflow-x: hidden;
+  }
+  
+  .obra-detail-content {
+    gap: 24px;
+  }
+  
+  .obra-detail-info {
+    text-align: center;
+  }
+  
+  .obra-detail-actions.mobile-only {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .obra-detail-info h1 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  
+  .obra-detail-carousel {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+  }
+  
+  .obra-detail-main-img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  
+  .obra-detail-carousel .carousel-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    border-width: 1px;
+  }
+  
+  .obra-detail-carousel .carousel-btn.prev {
+    left: 8px;
+  }
+  
+  .obra-detail-carousel .carousel-btn.next {
+    right: 8px;
+  }
+  
+  .obra-detail-meta {
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .obra-detail-meta .chip-lg {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .obra-detail-description {
+    margin-bottom: 24px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  
+  .obra-detail-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .btn-secondary,
+  .btn-text,
+  .btn-back {
+    justify-content: center;
+    width: 100%;
+    padding: 14px 20px;
+  }
+  
+  /* Thumbnails - hide scrollbar, fit to width */
+  .obra-detail-thumbs {
+    gap: 8px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .obra-detail-thumbs::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .obra-detail-thumbs .thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  
+  .related-works {
+    margin-top: 32px;
+    padding-top: 32px;
+  }
+  
+  .related-works h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  
+  .related-work-card img,
+  .related-work-placeholder {
+    height: 140px;
+  }
+  
+  .related-work-info {
+    padding: 12px;
+  }
+  
+  .related-work-info h3 {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .obra-detail {
+    padding-top: 12px;
+  }
+  
+  .obra-detail-content {
+    gap: 20px;
+  }
+  
+  .obra-detail-info h1 {
+    font-size: 1.4rem;
+  }
+  
+  .breadcrumb {
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  
+  .breadcrumb .separator {
+    margin: 0 2px;
+  }
+  
+  .obra-detail-carousel {
+    border-radius: 6px;
+    aspect-ratio: 1/1;
+  }
+  
+  .obra-detail-carousel .carousel-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+  
+  .obra-detail-carousel .carousel-btn.prev {
+    left: 6px;
+  }
+  
+  .obra-detail-carousel .carousel-btn.next {
+    right: 6px;
+  }
+  
+  .obra-detail-thumbs {
+    gap: 6px;
+  }
+  
+  .obra-detail-thumbs .thumb {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .obra-detail-meta .chip-lg {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  
+  .obra-detail-meta .chip-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .obra-detail-description {
+    font-size: 14px;
+  }
+  
+  .btn-secondary,
+  .btn-text,
+  .btn-back {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .related-works-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .related-work-card img,
+  .related-work-placeholder {
+    height: 100px;
+  }
+  
+  .related-work-info {
+    padding: 10px;
+  }
+  
+  .related-work-info h3 {
+    font-size: 0.8rem;
+  }
+  
+  .related-work-info .city {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .obra-detail-info h1 {
+    font-size: 1.25rem;
+  }
+  
+  .breadcrumb {
+    font-size: 11px;
+  }
+  
+  .obra-detail-thumbs .thumb {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .obra-detail-carousel .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  
+  .related-work-card img,
+  .related-work-placeholder {
+    height: 90px;
+  }
 }

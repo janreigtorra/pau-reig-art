@@ -4,6 +4,7 @@ import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import Inici from './pages/Inici';
 import LArtista from './pages/LArtista';
 import LObra from './pages/LObra';
+import ObraDetail from './pages/ObraDetail';
 import ElTaller from './pages/ElTaller';
 import Media from './pages/Media';
 import logoUrl from '../logo/logo_main.png';
@@ -112,6 +113,7 @@ export default function App() {
             <Route path="/" element={<Inici />} />
             <Route path="/artista" element={<LArtista />} />
             <Route path="/obra" element={<LObra />} />
+            <Route path="/obra/:slug" element={<ObraDetail />} />
             <Route path="/taller" element={<ElTaller />} />
             <Route path="/media" element={<Media />} />
           </Routes>

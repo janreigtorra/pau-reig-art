@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { LanguageContext, ModalContext } from '../App';
+import SEO from '../components/SEO';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -170,6 +172,13 @@ function buildWorks(): WorkItem[] {
   return items;
 }
 
+// Generate SEO-friendly slug from work data
+function generateSeoSlug(slug: string, meta: WorkMeta): string {
+  const city = meta.city?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-') || '';
+  const baseName = slug.toLowerCase();
+  return city ? `${baseName}-${city}` : baseName;
+}
+
 export default function LObra() {
   const { language } = useContext(LanguageContext);
   const { setIsModalOpen } = useContext(ModalContext);
@@ -216,8 +225,18 @@ export default function LObra() {
 
   const t = (keyCat: string, keyEn: string) => (language === 'catala' ? keyCat : keyEn);
 
+  const seoDescription = language === 'catala'
+    ? 'Explora el catàleg complet de gegants, bestiari i figures festives creades per Pau Reig. Més de 25 obres per a festes de tota Catalunya: Gironella, Navàs, Solsona i més.'
+    : 'Explore the complete catalog of giants, bestiary and festive figures created by Pau Reig. Over 25 works for festivals across Catalonia: Gironella, Navàs, Solsona and more.';
+
   return (
-    <div className="container section">
+    <>
+      <SEO
+        title={t("L'Obra", 'The Work')}
+        description={seoDescription}
+        url="https://www.paureig.art/obra"
+      />
+      <div className="container section">
       <div className="obra-header">
         <h1 className="obra-title">{t("L'Obra", 'The Work')}</h1>
         <div className="obra-toolbar" role="group" aria-label="View mode">
@@ -251,20 +270,20 @@ export default function LObra() {
       {view === 'grid' ? (
         <div className="obra-grid">
           {works.map((w) => (
-            <button key={w.slug} className="obra-card" onClick={() => setSelectedSlug(w.slug)}>
+            <Link key={w.slug} className="obra-card" to={`/obra/${generateSeoSlug(w.slug, w.meta)}`}>
               {w.mainImageUrl ? (
                 <img className="obra-card-img" src={w.mainImageUrl} alt={w.meta.nom} loading="lazy" />
               ) : (
                 <div className="obra-card-placeholder" />
               )}
               <div className="obra-card-title">{w.meta.nom}</div>
-            </button>
+            </Link>
           ))}
         </div>
       ) : view === 'list' ? (
         <div className="obra-list">
           {works.map((w) => (
-            <button key={w.slug} className="obra-row" onClick={() => setSelectedSlug(w.slug)}>
+            <Link key={w.slug} className="obra-row" to={`/obra/${generateSeoSlug(w.slug, w.meta)}`}>
               {w.main2ImageUrl || w.mainImageUrl ? (
                 <img
                   className="obra-row-thumb"
@@ -282,7 +301,7 @@ export default function LObra() {
                   {w.meta.city ? <span className="chip">{w.meta.city}</span> : null}
                 </div>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       ) : view === 'map' ? (
@@ -368,6 +387,7 @@ export default function LObra() {
       </div>
       {selected ? <div className={`drawer-backdrop active`} onClick={() => setSelectedSlug(null)} /> : null}
     </div>
+    </>
   );
 }
 

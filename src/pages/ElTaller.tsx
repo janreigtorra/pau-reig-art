@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { LanguageContext } from '../App';
+import SEO from '../components/SEO';
 import taller from '../../taller.json';
 import destacatUrl from '../../fotos_generals/photo5.jpg';
 
@@ -13,9 +14,19 @@ export default function ElTaller() {
       .map(([, url]) => url);
   }, []);
 
+  const seoDescription = language === 'catala'
+    ? 'Descobreix el taller de Pau Reig a Solsona on es creen gegants i figures festives amb tècniques tradicionals. Veu el procés artesanal d\'escultura i construcció.'
+    : 'Discover Pau Reig\'s workshop in Solsona where giants and festive figures are created using traditional techniques. See the handcrafted sculpture and construction process.';
+
   return (
-    <div className="container section">
-      <h1>{language === 'catala' ? 'El Taller' : 'The Workshop'}</h1>
+    <>
+      <SEO
+        title={language === 'catala' ? 'El Taller' : 'The Workshop'}
+        description={seoDescription}
+        url="https://www.paureig.art/taller"
+      />
+      <div className="container section">
+        <h1>{language === 'catala' ? 'El Taller' : 'The Workshop'}</h1>
       <p className="lead">{language === 'catala' ? 'Espai de creació' : 'Creation space'}</p>
       <div className="two-col">
         <div className="text-justify text-lg">
@@ -34,6 +45,7 @@ export default function ElTaller() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 

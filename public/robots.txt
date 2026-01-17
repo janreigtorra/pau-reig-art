@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://paureig.art/sitemap.xml
+Sitemap: https://www.paureig.art/sitemap.xml
 
 # Allow all search engines to crawl the site
 Crawl-delay: 1

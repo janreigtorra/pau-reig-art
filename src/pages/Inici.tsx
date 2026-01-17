@@ -1,5 +1,6 @@
 import React, { useRef, useState, useContext } from 'react';
 import { LanguageContext } from '../App';
+import SEO from '../components/SEO';
 import heroVideoUrl from '../../videos/video.mp4';
 import contactImgUrl from '../../fotos_generals/photo2.jpg';
 
@@ -14,8 +15,24 @@ export default function Inici() {
     videoRef.current?.play().catch(() => {});
   };
 
+  // SEO content based on language
+  const seoTitle =
+    language === 'catala'
+      ? undefined // Use default title for homepage
+      : undefined;
+
+  const seoDescription =
+    language === 'catala'
+      ? 'Pau Reig és un artista i constructor de gegants i bestiari de Solsona, Catalunya. Creador de gegants, capgrossos i figures tradicionals per a festes catalanes. Art festiu artesanal amb tècniques tradicionals.'
+      : 'Pau Reig is a traditional giant (gegants) and bestiary builder and artist from Solsona, Catalonia. Creator of giants, big-heads, and traditional figures for Catalan festivals. Handcrafted festive art using traditional techniques.';
+
   return (
     <>
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        url="https://www.paureig.art/"
+      />
       <section className="hero">
         <video
           ref={videoRef}
@@ -54,7 +71,7 @@ export default function Inici() {
                   <svg className="icon" viewBox="0 0 24 24" aria-hidden>
                     <path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h2.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.56 1 1 0 0 1-.24 1.01l-2.21 2.22Z"/>
                   </svg>
-                  <a href="tel:+346545530689">+34 654 55 30 689</a>
+                  <a href="tel:+346545530689">+34 654 55 30 68</a>
                 </div>
               </div>
             </div>

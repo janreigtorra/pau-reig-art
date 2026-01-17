@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { LanguageContext } from '../App';
+import SEO from '../components/SEO';
 import artist from '../../artist.json';
 import contactImgUrl from '../../fotos_generals/photo2.jpg';
 
@@ -7,9 +8,19 @@ export default function LArtista() {
   const { language } = useContext(LanguageContext);
   const paragraphs = useMemo(() => artist[language] as string[], [language]);
 
+  const seoDescription = language === 'catala'
+    ? 'Descobreix Pau Reig, artista i constructor de gegants de Solsona. Format a l\'Escola Massana i Florence Academy of Art. Especialitzat en escultura i imatgeria festiva catalana.'
+    : 'Discover Pau Reig, artist and giant builder from Solsona. Trained at Escola Massana and Florence Academy of Art. Specialized in sculpture and Catalan festive imagery.';
+
   return (
-    <div className="container section container-wide">
-      <h1>{language === 'catala' ? "L'Artista" : 'The Artist'}</h1>
+    <>
+      <SEO
+        title={language === 'catala' ? "L'Artista" : 'The Artist'}
+        description={seoDescription}
+        url="https://www.paureig.art/artista"
+      />
+      <div className="container section container-wide">
+        <h1>{language === 'catala' ? "L'Artista" : 'The Artist'}</h1>
       <p className="lead">{language === 'catala' ? 'Biografia i trajectòria' : 'Biography and background'}</p>
       <div className="two-col">
         <div className="text-justify text-lg">
@@ -22,6 +33,7 @@ export default function LArtista() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

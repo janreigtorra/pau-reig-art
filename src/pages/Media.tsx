@@ -1,9 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { LanguageContext } from '../App';
+import SEO from '../components/SEO';
 import { getInstagramEmbedPosts, loadInstagramEmbeds, refreshInstagramEmbeds, InstagramEmbedPost } from '../services/instagramEmbed';
 
 export default function Media() {
   const { language } = useContext(LanguageContext);
+
+  const seoDescription = language === 'catala'
+    ? 'Reportatges, entrevistes i aparicions de Pau Reig als mitjans de comunicació. Cobertura de premsa sobre les seves obres de gegants i imatgeria festiva catalana.'
+    : 'Reports, interviews and media appearances of Pau Reig. Press coverage about his giant sculptures and Catalan festive imagery works.';
   const [posts, setPosts] = useState<InstagramEmbedPost[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,8 +62,14 @@ export default function Media() {
   };
 
   return (
-    <div className="container section">
-      <h1>{language === 'catala' ? 'Media' : 'Media'}</h1>
+    <>
+      <SEO
+        title="Media"
+        description={seoDescription}
+        url="https://www.paureig.art/media"
+      />
+      <div className="container section">
+        <h1>{language === 'catala' ? 'Media' : 'Media'}</h1>
       <p className="lead">{language === 'catala' ? 'Segueix-me a Instagram' : 'Follow me on Instagram'}</p>
       
       <div className="media-content">
@@ -362,5 +373,6 @@ export default function Media() {
         </div>
       </div>
     </div>
+    </>
   );
 }
