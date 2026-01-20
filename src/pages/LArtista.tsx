@@ -18,6 +18,7 @@ export default function LArtista() {
         title={language === 'catala' ? "L'Artista" : 'The Artist'}
         description={seoDescription}
         url="https://www.paureig.art/artista"
+        locale={language === 'catala' ? 'ca_ES' : 'en_US'}
       />
       <div className="container section container-wide">
         <h1>{language === 'catala' ? "L'Artista" : 'The Artist'}</h1>

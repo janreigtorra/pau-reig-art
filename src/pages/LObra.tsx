@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LanguageContext, ModalContext } from '../App';
 import SEO from '../components/SEO';
 import L from 'leaflet';
@@ -182,8 +182,17 @@ function generateSeoSlug(slug: string, meta: WorkMeta): string {
 export default function LObra() {
   const { language } = useContext(LanguageContext);
   const { setIsModalOpen } = useContext(ModalContext);
+  const navigate = useNavigate();
   const [view, setView] = useState<ViewMode>('grid');
   const works = useMemo(() => buildWorks(), []);
+  
+  // Navigate to detail page (used by Map and Timeline views)
+  const navigateToWork = (slug: string) => {
+    const work = works.find(w => w.slug === slug);
+    if (work) {
+      navigate(`/obra/${generateSeoSlug(slug, work.meta)}`);
+    }
+  };
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
@@ -235,6 +244,7 @@ export default function LObra() {
         title={t("L'Obra", 'The Work')}
         description={seoDescription}
         url="https://www.paureig.art/obra"
+        locale={language === 'catala' ? 'ca_ES' : 'en_US'}
       />
       <div className="container section">
       <div className="obra-header">
@@ -305,9 +315,9 @@ export default function LObra() {
           ))}
         </div>
       ) : view === 'map' ? (
-        <MapView works={works} onSelect={(slug) => setSelectedSlug(slug)} language={language} />
+        <MapView works={works} onSelect={navigateToWork} language={language} />
       ) : (
-        <TimelineView works={works} onSelect={(slug) => setSelectedSlug(slug)} language={language} />
+        <TimelineView works={works} onSelect={navigateToWork} language={language} />
       )}
 
       {/* Drawer */}

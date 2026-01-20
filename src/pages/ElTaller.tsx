@@ -24,6 +24,7 @@ export default function ElTaller() {
         title={language === 'catala' ? 'El Taller' : 'The Workshop'}
         description={seoDescription}
         url="https://www.paureig.art/taller"
+        locale={language === 'catala' ? 'ca_ES' : 'en_US'}
       />
       <div className="container section">
         <h1>{language === 'catala' ? 'El Taller' : 'The Workshop'}</h1>

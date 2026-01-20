@@ -67,6 +67,7 @@ export default function Media() {
         title="Media"
         description={seoDescription}
         url="https://www.paureig.art/media"
+        locale={language === 'catala' ? 'ca_ES' : 'en_US'}
       />
       <div className="container section">
         <h1>{language === 'catala' ? 'Media' : 'Media'}</h1>

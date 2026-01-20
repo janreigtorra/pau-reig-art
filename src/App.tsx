@@ -7,6 +7,7 @@ import LObra from './pages/LObra';
 import ObraDetail from './pages/ObraDetail';
 import ElTaller from './pages/ElTaller';
 import Media from './pages/Media';
+import ScrollToTop from './components/ScrollToTop';
 import logoUrl from '../logo/logo_main.png';
 
 type Language = 'catala' | 'english';
@@ -51,6 +52,7 @@ export default function App() {
   return (
     <LanguageContext.Provider value={langCtx}>
       <ModalContext.Provider value={modalCtx}>
+        <ScrollToTop />
         <nav className={`nav ${isHome ? (isScrolled ? 'nav-home scrolled' : 'nav-home top') : 'nav-solid'} ${isModalOpen ? 'compact' : ''}`}>
           <div className="nav-inner">
             <div className="brand">

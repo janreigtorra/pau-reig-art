@@ -16,11 +16,6 @@ export default function Inici() {
   };
 
   // SEO content based on language
-  const seoTitle =
-    language === 'catala'
-      ? undefined // Use default title for homepage
-      : undefined;
-
   const seoDescription =
     language === 'catala'
       ? 'Pau Reig és un artista i constructor de gegants i bestiari de Solsona, Catalunya. Creador de gegants, capgrossos i figures tradicionals per a festes catalanes. Art festiu artesanal amb tècniques tradicionals.'
@@ -29,9 +24,10 @@ export default function Inici() {
   return (
     <>
       <SEO
-        title={seoTitle}
+        isHomepage
         description={seoDescription}
         url="https://www.paureig.art/"
+        locale={language === 'catala' ? 'ca_ES' : 'en_US'}
       />
       <section className="hero">
         <video

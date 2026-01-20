@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react';
+import React, { useContext, useMemo, useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { LanguageContext } from '../App';
@@ -187,6 +187,16 @@ export default function ObraDetail() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [work, navigate]);
+
+  // Scroll to top BEFORE browser paints (useLayoutEffect runs synchronously)
+  useLayoutEffect(() => {
+    // Disable browser's automatic scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    // Scroll to top immediately
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   // Reset image index when work changes
   useEffect(() => {
