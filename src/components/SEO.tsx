@@ -13,7 +13,7 @@ interface SEOProps {
 }
 
 const defaultMeta = {
-  title: 'Pau Reig – Gegants i Imatgeria Festiva Catalana | Constructor de Gegants a Solsona',
+  title: 'Pau Reig – Art | Constructor d\'Imatgeria Festiva',
   description:
     'Pau Reig és un artista i constructor de gegants i bestiari de Solsona, Catalunya. Creador de gegants, capgrossos i figures tradicionals per a festes catalanes. Art festiu artesanal amb tècniques tradicionals.',
   image: 'https://www.paureig.art/logo/logo_main.png',
