@@ -26,19 +26,15 @@ export default function App() {
   const isHome = location.pathname === '/';
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Track scroll on all pages for header shrinking
   useEffect(() => {
-    if (!isHome) {
-      setIsScrolled(false);
-      return;
-    }
-
     const onScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [isHome]);
+  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -53,10 +49,17 @@ export default function App() {
     <LanguageContext.Provider value={langCtx}>
       <ModalContext.Provider value={modalCtx}>
         <ScrollToTop />
-        <nav className={`nav ${isHome ? (isScrolled ? 'nav-home scrolled' : 'nav-home top') : 'nav-solid'} ${isModalOpen ? 'compact' : ''}`}>
-          <div className="nav-inner">
+        <nav 
+          className={`nav ${isHome ? (isScrolled ? 'nav-home scrolled' : 'nav-home top') : 'nav-solid'} ${isScrolled ? 'nav-shrunk' : ''} ${isModalOpen ? 'compact' : ''}`}
+          style={isScrolled ? { height: '70px' } : undefined}
+        >
+          <div className="nav-inner" style={isScrolled ? { padding: '8px 48px' } : undefined}>
             <div className="brand">
-              <img src={logoUrl} alt="Pau Reig - Art" />
+              <img 
+                src={logoUrl} 
+                alt="Pau Reig - Art" 
+                style={isScrolled ? { height: '45px' } : undefined}
+              />
             </div>
             <div className="spacer" />
             <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
