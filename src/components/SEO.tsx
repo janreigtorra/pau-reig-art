@@ -38,7 +38,7 @@ export default function SEO({
   const fullTitle = isHomepage
     ? defaultMeta.title
     : title
-      ? `${title} | Pau Reig – Gegants i Art Festiu`
+      ? `${title} | Pau Reig – Art | Constructor d'Imatgeria Festiva`
       : defaultMeta.title;
 
   return (
@@ -63,7 +63,7 @@ export default function SEO({
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content={fullTitle} />
-      <meta property="og:site_name" content="Pau Reig – Gegants i Art Festiu" />
+      <meta property="og:site_name" content="Pau Reig – Art | Constructor d'Imatgeria Festiva" />
       <meta property="og:locale" content={locale} />
 
       {/* Twitter */}

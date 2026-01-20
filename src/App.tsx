@@ -25,15 +25,31 @@ export default function App() {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Track scroll on all pages for header shrinking
+  // Check if mobile view
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Track scroll on all pages for header shrinking (desktop only)
   useEffect(() => {
     const onScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      setIsScrolled(scrollTop > 20);
     };
+    
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll, { capture: true });
+      document.removeEventListener('scroll', onScroll, { capture: true });
+    };
   }, []);
 
   // Close mobile menu when route changes
@@ -50,15 +66,27 @@ export default function App() {
       <ModalContext.Provider value={modalCtx}>
         <ScrollToTop />
         <nav 
-          className={`nav ${isHome ? (isScrolled ? 'nav-home scrolled' : 'nav-home top') : 'nav-solid'} ${isScrolled ? 'nav-shrunk' : ''} ${isModalOpen ? 'compact' : ''}`}
-          style={isScrolled ? { height: '70px' } : undefined}
+          className={`nav ${isHome ? (isScrolled ? 'nav-home scrolled' : 'nav-home top') : 'nav-solid'} ${isModalOpen ? 'compact' : ''}`}
+          style={!isMobile ? { 
+            height: isScrolled ? '95px' : '152px',
+            transition: 'all 0.3s ease'
+          } : undefined}
         >
-          <div className="nav-inner" style={isScrolled ? { padding: '8px 48px' } : undefined}>
+          <div 
+            className="nav-inner" 
+            style={!isMobile ? { 
+              padding: isScrolled ? '12px 72px 14px 72px' : '20px 72px 30px 72px',
+              transition: 'all 0.3s ease'
+            } : undefined}
+          >
             <div className="brand">
               <img 
                 src={logoUrl} 
                 alt="Pau Reig - Art" 
-                style={isScrolled ? { height: '45px' } : undefined}
+                style={!isMobile ? { 
+                  height: isScrolled ? '70px' : '104px',
+                  transition: 'all 0.3s ease'
+                } : undefined}
               />
             </div>
             <div className="spacer" />

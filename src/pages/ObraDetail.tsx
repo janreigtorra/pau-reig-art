@@ -276,7 +276,7 @@ export default function ObraDetail() {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:site_name" content="Pau Reig – Gegants i Art Festiu" />
+        <meta property="og:site_name" content="Pau Reig – Art | Constructor d'Imatgeria Festiva" />
         <meta property="og:locale" content={language === 'catala' ? 'ca_ES' : 'en_US'} />
         
         {/* Twitter */}
